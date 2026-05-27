@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>delivery_tests</name>
+  <version>1.0.0</version>
+  <description>
+    Pytest-based unit and integration test scenarios for the campus
+    delivery robot. Maintained by Member 7 but contains scenarios that
+    exercise each team member's nodes.
+  </description>
+  <maintainer email="member7@campusdelivery.local">Member 7</maintainer>
+  <license>MIT</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>rospy</depend>
+  <depend>std_msgs</depend>
+  <depend>delivery_msgs</depend>
+
+  <test_depend>rostest</test_depend>
+</package>

@@ -1,0 +1,19 @@
+# DeliveryMission.action
+# A long-running goal handled by the navigation action server.
+# Implementing the delivery as an action gives us live feedback
+# (distance remaining, percent complete) which mission control and the
+# CLI tool can display while the robot is on its way.
+
+# Goal: where to deliver
+string destination_name              # symbolic destination, e.g. "library"
+geometry_msgs/PoseStamped target     # explicit pose in /map frame
+---
+# Result: returned once the mission ends
+bool success
+float32 total_distance_m
+string final_state                   # "DELIVERED", "ABORTED", "FAILED"
+---
+# Feedback: streamed during navigation
+float32 distance_remaining_m
+float32 percent_complete
+string current_state

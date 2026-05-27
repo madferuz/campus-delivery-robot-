@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>delivery_localization</name>
+  <version>1.0.0</version>
+  <description>
+    Localization and coordinate-frame infrastructure for the campus
+    delivery robot.
+    Owner: Member 3.
+    Contains two ROS nodes:
+      - gps_simulator_node : simulates a NEO-style GPS fix from the
+        Gazebo ground truth and publishes NavSatFix.
+      - map_tf_broadcaster_node : publishes a static transform from
+        /map to /odom and exposes a "set initial pose" service for the
+        AMCL localizer (used by the navigation stack).
+  </description>
+  <maintainer email="member3@campusdelivery.local">Member 3</maintainer>
+  <license>MIT</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>rospy</depend>
+  <depend>std_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>tf2_ros</depend>
+  <depend>tf2_geometry_msgs</depend>
+</package>

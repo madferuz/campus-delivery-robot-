@@ -1,0 +1,9 @@
+# EmergencyStop.srv
+# Trigger or release the emergency stop on the robot. Called by the
+# automatic braking node when an obstacle is too close, and by the CLI
+# tool for manual safety override.
+
+bool engage     # true = stop the robot, false = release the brake
+string reason   # human readable reason (logged to rosout)
+---
+bool success

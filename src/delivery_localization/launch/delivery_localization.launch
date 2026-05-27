@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!--
+  delivery_localization.launch
+  ============================
+  Owner: Member 3.
+  Launches the simulated GPS and the map->odom TF broadcaster.
+  The argument `with_tf` lets us disable the broadcaster when the
+  full AMCL stack is in charge of the map -> odom transform.
+-->
+<launch>
+  <arg name="with_tf" default="true"/>
+
+  <node pkg="delivery_localization"
+        type="gps_simulator_node.py"
+        name="gps_simulator_node"
+        output="screen">
+    <param name="publish_rate" value="5.0"/>
+    <param name="noise_std_m"  value="0.5"/>
+  </node>
+
+  <node if="$(arg with_tf)"
+        pkg="delivery_localization"
+        type="map_tf_broadcaster_node.py"
+        name="map_tf_broadcaster_node"
+        output="screen">
+    <param name="publish_rate" value="20.0"/>
+  </node>
+</launch>

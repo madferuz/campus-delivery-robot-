@@ -1,0 +1,15 @@
+# waypoints.yaml
+# Symbolic destinations the robot can deliver to.
+# Each value is [x_meters, y_meters, yaw_radians] in the /map frame.
+# The waypoint_action_server_node loads this file on startup.
+#
+# These coordinates correspond to TurtleBot3 house world landmarks and
+# can be tweaked freely without code changes.
+
+destinations:
+  home:    [0.0,  0.0,  0.0]
+  library: [2.5,  1.5,  0.0]
+  cafe:    [4.0, -1.0,  1.5708]
+  gym:     [-2.0, 3.0, -1.5708]
+  dorm_a:  [1.0,  3.5,  3.14159]
+  dorm_b:  [-3.0, -2.0, 0.0]

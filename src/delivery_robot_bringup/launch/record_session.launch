@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!--
+  record_session.launch
+  =====================
+  Mandatory rosbag recording for the project. Spawns a rosbag record
+  node with a curated topic list that contains everything we need to
+  replay a demo end-to-end:
+    * sensor inputs   (/scan, /odom, /tf, /camera/...)
+    * actuator output (/cmd_vel)
+    * project topics  (/delivery/*)
+    * nav stack plan  (/move_base/NavfnROS/plan)
+
+  Usage:
+      $ roslaunch delivery_robot_bringup record_session.launch \
+            bag_prefix:=demo_run1
+
+  The .bag file is written into the bag/ directory of the workspace by
+  default. Use `rosbag info <file>` and `rosbag play <file>` to inspect
+  and replay recordings.
+-->
+<launch>
+
+  <arg name="bag_prefix" default="delivery_session"/>
+  <arg name="output_dir" default="$(find delivery_robot_bringup)/../../../bag"/>
+
+  <node pkg="rosbag" type="record" name="delivery_rosbag_recorder"
+        output="screen"
+        args="--output-prefix=$(arg output_dir)/$(arg bag_prefix)
+              /cmd_vel
+              /scan
+              /odom
+              /tf
+              /tf_static
+              /camera/rgb/image_raw/compressed
+              /delivery/status
+              /delivery/gps/fix
+              /delivery/safety/brake_engaged
+              /delivery/safety/emergency_stop
+              /delivery/perception/lidar/obstacle
+              /delivery/perception/vision/obstacles
+              /delivery/perception/vision/annotated
+              /delivery/voice/commands
+              /delivery/voice/text_in
+              /delivery/remote/telemetry
+              /delivery/navigation/plan_summary
+              /delivery/box/state
+              /move_base/NavfnROS/plan
+              /move_base/DWAPlannerROS/global_plan
+              /move_base/result
+              /move_base/feedback"/>
+
+</launch>

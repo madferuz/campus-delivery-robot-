@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!--
+  test_voice_parser.test
+  ======================
+  rostest wrapper around the pure-Python pytest module
+  test_voice_parser.py. Because the parser unit tests do not need a
+  live ROS master we just point rostest at the pytest module.
+-->
+<launch>
+  <test test-name="voice_parser"
+        pkg="delivery_tests"
+        type="test_voice_parser.py"
+        time-limit="30.0"/>
+</launch>

@@ -1,0 +1,9 @@
+# OpenDeliveryBox.srv
+# Request the delivery box to open or close. Implemented as a service
+# (request/reply) because mission control needs to know whether the
+# actuation succeeded before signalling delivery completion.
+
+bool open       # true = open the lid, false = close
+---
+bool success    # true if the actuation was performed
+string message  # human readable status

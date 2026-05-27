@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>delivery_perception_lidar</name>
+  <version>1.0.0</version>
+  <description>
+    LiDAR-based perception and automatic emergency braking for the
+    campus delivery robot.
+    Owner: Member 2.
+    Contains two ROS nodes:
+      - lidar_obstacle_node : subscribes to /scan, computes the closest
+        forward obstacle, and publishes it on a topic.
+      - auto_brake_node     : monitors the obstacle topic, and calls the
+        EmergencyStop service when the obstacle is too close.
+  </description>
+  <maintainer email="member2@campusdelivery.local">Member 2</maintainer>
+  <license>MIT</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>rospy</depend>
+  <depend>std_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>delivery_msgs</depend>
+</package>

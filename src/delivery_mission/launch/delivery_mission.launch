@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!--
+  delivery_mission.launch
+  =======================
+  Owner: Member 6.
+  Launches the delivery box service and the mission FSM.
+-->
+<launch>
+  <node pkg="delivery_mission"
+        type="delivery_box_service_node.py"
+        name="delivery_box_service_node"
+        output="screen">
+    <param name="actuation_time_s" value="1.5"/>
+  </node>
+
+  <node pkg="delivery_mission"
+        type="mission_fsm_node.py"
+        name="mission_fsm_node"
+        output="screen">
+    <param name="home_destination" value="home"/>
+  </node>
+</launch>

@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!--
+  delivery_perception_lidar.launch
+  ================================
+  Owner: Member 2.
+  Launches both LiDAR-related nodes:
+    1. lidar_obstacle_node - publishes ObstacleInfo
+    2. auto_brake_node     - emergency stop service + brake controller
+-->
+<launch>
+
+  <arg name="brake_distance" default="0.35"/>
+
+  <node pkg="delivery_perception_lidar"
+        type="lidar_obstacle_node.py"
+        name="lidar_obstacle_node"
+        output="screen">
+    <param name="forward_half_angle" value="0.52"/>
+    <param name="min_valid_range"    value="0.05"/>
+  </node>
+
+  <node pkg="delivery_perception_lidar"
+        type="auto_brake_node.py"
+        name="auto_brake_node"
+        output="screen">
+    <param name="brake_distance"     value="$(arg brake_distance)"/>
+    <param name="latch_until_clear"  value="false"/>
+  </node>
+
+</launch>

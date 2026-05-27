@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>delivery_robot_bringup</name>
+  <version>1.0.0</version>
+  <description>
+    Top-level launch, configuration and visualization assets for the
+    Campus Delivery Robot. This package is the entry point of the
+    project: a single roslaunch starts Gazebo, RViz, the navigation
+    stack and every team member's nodes.
+    Shared infrastructure - maintained by Member 7.
+  </description>
+  <maintainer email="member7@campusdelivery.local">Member 7</maintainer>
+  <license>MIT</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <exec_depend>gazebo_ros</exec_depend>
+  <exec_depend>turtlebot3_description</exec_depend>
+  <exec_depend>turtlebot3_gazebo</exec_depend>
+  <exec_depend>turtlebot3_navigation</exec_depend>
+  <exec_depend>map_server</exec_depend>
+  <exec_depend>amcl</exec_depend>
+  <exec_depend>move_base</exec_depend>
+  <exec_depend>rviz</exec_depend>
+
+  <exec_depend>delivery_msgs</exec_depend>
+  <exec_depend>delivery_perception_vision</exec_depend>
+  <exec_depend>delivery_perception_lidar</exec_depend>
+  <exec_depend>delivery_localization</exec_depend>
+  <exec_depend>delivery_navigation</exec_depend>
+  <exec_depend>delivery_voice_remote</exec_depend>
+  <exec_depend>delivery_mission</exec_depend>
+</package>

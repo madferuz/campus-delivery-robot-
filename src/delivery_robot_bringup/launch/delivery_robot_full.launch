@@ -1,0 +1,124 @@
+<?xml version="1.0"?>
+<!--
+  delivery_robot_full.launch
+  ==========================
+  Top-level launch file for the Campus Delivery Robot.
+
+  This single command brings up the entire system:
+      $ roslaunch delivery_robot_bringup delivery_robot_full.launch
+
+  It launches, in order:
+      1. Gazebo with the TurtleBot3 world (configurable).
+      2. The TurtleBot3 spawner.
+      3. The standard map server + AMCL + move_base navigation stack
+         (with parameters from this package's config/ directory).
+      4. Every team member's nodes via their package-local launch files.
+      5. RViz with a project-specific configuration.
+
+  Important arguments:
+      world           : turtlebot3 world to load. Default "house".
+      model           : "burger" / "waffle" / "waffle_pi".  Default
+                        "waffle_pi" - the only TurtleBot3 model that
+                        ships with a camera, which we need for the
+                        OpenCV detector.
+      open_rviz       : true to launch RViz. Default true.
+      voice_mode      : "text" or "mic". Default "text".
+      brake_distance  : Auto-brake threshold in metres. Default 0.35.
+-->
+<launch>
+
+  <!-- ============================================================== -->
+  <!-- Arguments                                                     -->
+  <!-- ============================================================== -->
+  <arg name="model"          default="waffle_pi"/>
+  <arg name="world"          default="house"/>
+  <arg name="open_rviz"      default="true"/>
+  <arg name="voice_mode"     default="text"/>
+  <arg name="brake_distance" default="0.35"/>
+  <arg name="x_pos"          default="0.0"/>
+  <arg name="y_pos"          default="0.0"/>
+  <arg name="z_pos"          default="0.0"/>
+
+  <!-- TURTLEBOT3_MODEL env var is required by the TB3 packages. -->
+  <env name="TURTLEBOT3_MODEL" value="$(arg model)"/>
+
+  <!-- ============================================================== -->
+  <!-- 1. Gazebo + TurtleBot3                                        -->
+  <!-- ============================================================== -->
+  <include file="$(find turtlebot3_gazebo)/launch/turtlebot3_$(arg world).launch">
+    <arg name="x_pos"  value="$(arg x_pos)"/>
+    <arg name="y_pos"  value="$(arg y_pos)"/>
+    <arg name="z_pos"  value="$(arg z_pos)"/>
+  </include>
+
+  <!-- ============================================================== -->
+  <!-- 2. Navigation stack                                            -->
+  <!--    map_server + AMCL + move_base, parameter tweaks live in    -->
+  <!--    config/move_base_params.yaml so they can be tuned per demo.-->
+  <!-- ============================================================== -->
+  <arg name="map_file"
+       default="$(find delivery_robot_bringup)/maps/house_map.yaml"/>
+
+  <node pkg="map_server" type="map_server" name="map_server"
+        args="$(arg map_file)"/>
+
+  <include file="$(find turtlebot3_navigation)/launch/amcl.launch"/>
+
+  <node pkg="move_base" type="move_base" name="move_base"
+        respawn="false" output="screen">
+    <rosparam command="load"
+              file="$(find turtlebot3_navigation)/param/costmap_common_params_$(arg model).yaml"
+              ns="global_costmap"/>
+    <rosparam command="load"
+              file="$(find turtlebot3_navigation)/param/costmap_common_params_$(arg model).yaml"
+              ns="local_costmap"/>
+    <rosparam command="load"
+              file="$(find turtlebot3_navigation)/param/local_costmap_params.yaml"/>
+    <rosparam command="load"
+              file="$(find turtlebot3_navigation)/param/global_costmap_params.yaml"/>
+    <rosparam command="load"
+              file="$(find turtlebot3_navigation)/param/move_base_params.yaml"/>
+    <rosparam command="load"
+              file="$(find turtlebot3_navigation)/param/dwa_local_planner_params_$(arg model).yaml"/>
+    <!-- Project-specific overrides (max_vel_x, safety_distance, etc). -->
+    <rosparam command="load"
+              file="$(find delivery_robot_bringup)/config/move_base_overrides.yaml"/>
+  </node>
+
+  <!-- ============================================================== -->
+  <!-- 3. Team member sub-systems                                     -->
+  <!-- ============================================================== -->
+
+  <!-- Member 1: vision perception -->
+  <include file="$(find delivery_perception_vision)/launch/delivery_perception_vision.launch"/>
+
+  <!-- Member 2: LiDAR perception + auto brake -->
+  <include file="$(find delivery_perception_lidar)/launch/delivery_perception_lidar.launch">
+    <arg name="brake_distance" value="$(arg brake_distance)"/>
+  </include>
+
+  <!-- Member 3: localisation (we let AMCL own /map -> /odom, so
+       disable the static broadcaster here). -->
+  <include file="$(find delivery_localization)/launch/delivery_localization.launch">
+    <arg name="with_tf" value="false"/>
+  </include>
+
+  <!-- Member 4: high-level navigation (action server etc). -->
+  <include file="$(find delivery_navigation)/launch/delivery_navigation.launch"/>
+
+  <!-- Member 5: voice + remote telemetry. -->
+  <include file="$(find delivery_voice_remote)/launch/delivery_voice_remote.launch">
+    <arg name="voice_mode" value="$(arg voice_mode)"/>
+  </include>
+
+  <!-- Member 6: mission FSM + delivery box. -->
+  <include file="$(find delivery_mission)/launch/delivery_mission.launch"/>
+
+  <!-- ============================================================== -->
+  <!-- 4. RViz                                                        -->
+  <!-- ============================================================== -->
+  <node if="$(arg open_rviz)"
+        pkg="rviz" type="rviz" name="rviz"
+        args="-d $(find delivery_robot_bringup)/rviz/delivery_robot.rviz"/>
+
+</launch>

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!--
+  delivery_voice_remote.launch
+  ============================
+  Owner: Member 5.
+  Launches the voice command parser and remote telemetry aggregator.
+  Set voice_mode to "mic" to use a real microphone (requires
+  speechrecognition + pyaudio + portaudio installed). Default "text"
+  mode is safe on headless CI machines.
+-->
+<launch>
+  <arg name="voice_mode" default="text"/>
+
+  <node pkg="delivery_voice_remote"
+        type="voice_command_node.py"
+        name="voice_command_node"
+        output="screen">
+    <param name="mode" value="$(arg voice_mode)"/>
+  </node>
+
+  <node pkg="delivery_voice_remote"
+        type="remote_telemetry_node.py"
+        name="remote_telemetry_node"
+        output="screen">
+    <param name="publish_rate" value="2.0"/>
+  </node>
+</launch>

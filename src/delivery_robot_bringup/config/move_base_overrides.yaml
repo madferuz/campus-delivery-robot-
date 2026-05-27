@@ -1,0 +1,34 @@
+# move_base_overrides.yaml
+# Project-specific tweaks loaded *after* the TurtleBot3 defaults.
+# These values intentionally override the safer-than-stock defaults so
+# the campus delivery robot demo runs at realistic speeds.
+#
+# The Parameter Server entry described in the ROS functions list maps
+# to the values below - they are read by move_base on startup and are
+# also reachable from the CLI:
+#     rosparam get /move_base/DWAPlannerROS/max_vel_x
+
+DWAPlannerROS:
+  # Maximum forward speed (m/s).
+  max_vel_x: 0.20
+  min_vel_x: 0.0
+  # Translational acceleration limit (m/s^2).
+  acc_lim_x: 1.5
+  # Rotational limits (rad/s).
+  max_vel_theta: 1.5
+  acc_lim_theta: 2.5
+  # How close the robot must reach the goal before move_base reports
+  # success. Larger -> the navigation server returns success sooner,
+  # which keeps the demo snappy.
+  xy_goal_tolerance: 0.20
+  yaw_goal_tolerance: 0.30
+
+global_costmap:
+  # Margin around the robot footprint used for the global plan. This
+  # is the "safety distance" called out in the ROS functions list.
+  inflation_radius: 0.45
+  cost_scaling_factor: 3.0
+
+local_costmap:
+  inflation_radius: 0.35
+  cost_scaling_factor: 3.5

@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!--
+  delivery_navigation.launch
+  ==========================
+  Owner: Member 4.
+  Launches the high-level navigation nodes and loads the waypoint
+  catalogue. The move_base stack itself is launched from
+  delivery_robot_bringup since it is shared infrastructure.
+-->
+<launch>
+
+  <node pkg="delivery_navigation"
+        type="waypoint_action_server_node.py"
+        name="waypoint_action_server_node"
+        output="screen">
+    <rosparam command="load"
+              file="$(find delivery_navigation)/config/waypoints.yaml"/>
+    <param name="robot_frame"  value="base_link"/>
+    <param name="global_frame" value="map"/>
+  </node>
+
+  <node pkg="delivery_navigation"
+        type="global_planner_helper_node.py"
+        name="global_planner_helper_node"
+        output="screen">
+    <param name="plan_topic" value="/move_base/NavfnROS/plan"/>
+  </node>
+
+</launch>

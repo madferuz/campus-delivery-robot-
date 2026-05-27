@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>delivery_perception_vision</name>
+  <version>1.0.0</version>
+  <description>
+    Camera-based perception for the campus delivery robot.
+    Owner: Member 1.
+    Contains two ROS nodes:
+      - camera_publisher_node : republishes Gazebo camera frames on a
+        canonical topic and applies basic preprocessing.
+      - vision_detector_node  : runs OpenCV based pedestrian and
+        obstacle detection and publishes ObstacleInfo messages.
+  </description>
+  <maintainer email="member1@campusdelivery.local">Member 1</maintainer>
+  <license>MIT</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>rospy</depend>
+  <depend>std_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>cv_bridge</depend>
+  <depend>image_transport</depend>
+  <depend>delivery_msgs</depend>
+</package>

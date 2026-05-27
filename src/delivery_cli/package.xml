@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>delivery_cli</name>
+  <version>1.0.0</version>
+  <description>
+    Advanced click-based command-line interface for the campus delivery
+    robot. Provides subcommands to send voice text, dispatch missions,
+    monitor status, control the brake and the delivery box, and start
+    or replay rosbag recordings.
+    Owner: Member 7.
+
+    Note: not strictly a ROS package - it ships Python entry points
+    that talk to the running ROS graph. Lives in the workspace so
+    catkin pip-installs it together with the rest of the project.
+  </description>
+  <maintainer email="member7@campusdelivery.local">Member 7</maintainer>
+  <license>MIT</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>rospy</depend>
+  <depend>std_msgs</depend>
+  <depend>delivery_msgs</depend>
+</package>

@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!--
+  delivery_perception_vision.launch
+  =================================
+  Owner: Member 1.
+  Launches both camera-based ROS functions:
+    1. camera_publisher_node  - throttled republisher with preprocessing
+    2. vision_detector_node   - OpenCV pedestrian / obstacle detector
+-->
+<launch>
+
+  <!-- Allow overriding the source camera topic at launch time. -->
+  <arg name="input_camera_topic" default="/camera/rgb/image_raw"/>
+  <arg name="publish_rate"       default="10.0"/>
+
+  <node pkg="delivery_perception_vision"
+        type="camera_publisher_node.py"
+        name="camera_publisher_node"
+        output="screen">
+    <param name="input_topic"   value="$(arg input_camera_topic)"/>
+    <param name="output_topic"  value="/delivery/camera/image"/>
+    <param name="target_width"  value="320"/>
+    <param name="target_height" value="240"/>
+    <param name="publish_rate"  value="$(arg publish_rate)"/>
+  </node>
+
+  <node pkg="delivery_perception_vision"
+        type="vision_detector_node.py"
+        name="vision_detector_node"
+        output="screen">
+    <param name="image_topic"    value="/delivery/camera/image"/>
+    <param name="min_confidence" value="0.4"/>
+  </node>
+
+</launch>
